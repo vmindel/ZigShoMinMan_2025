@@ -7,7 +7,7 @@ __pycache__/
 *.so
 ._*
 # Distribution / packaging
-figures/
+figures_old/
 intermediate_notebooks/
 revison_dat/
 backup_notebooks_old/
