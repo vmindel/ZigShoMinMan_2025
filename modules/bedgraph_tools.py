@@ -429,8 +429,8 @@ def expand_data(data):
     expanded_df = pl.DataFrame(expanded_rows, schema=['Chromosome', 'Start', 'End', 'Value'])
     
     # Combine expanded rows with single-base reads
-    result = pl.concat([good_data.select(expanded_df.schema), expanded_df], how='vertical')
-    
+    # result = pl.concat([good_data.select(expanded_df.schema), expanded_df], how='vertical')
+    return pl.concat([good_data.select(expanded_df.columns), expanded_df], how='vertical').sort(['Chromosome', 'Start'])
     # Sort the results
     return result.sort(['Chromosome', 'Start'])
 
@@ -483,13 +483,13 @@ def calc_frac_cov(df, reads_col):
     - A Polars DataFrame with the cumulative fraction of base pairs by coverage.
     """
     coverage_dist = (
-        df.groupby(reads_col)
+        df.group_by(reads_col)
         .agg(pl.count().alias("count"))
         .sort(reads_col, descending=False)
     )
     total_bases = coverage_dist["count"].sum()
     return coverage_dist.with_columns(
-        ((pl.col("count").cumsum(reverse=True)) / total_bases).alias("fraction")
+        ((pl.col("count").cum_sum(reverse=True)) / total_bases).alias("fraction")
     )
 
 

@@ -5,8 +5,12 @@ __pycache__/
 
 # C extensions
 *.so
-
+._*
 # Distribution / packaging
+figures/
+intermediate_notebooks/
+revison_dat/
+backup_notebooks_old/
 .Python
 build/
 develop-eggs/
